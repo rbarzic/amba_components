@@ -34,7 +34,7 @@ module sync_ram_wf (/*AUTOARG*/
    // Outputs
    dout,
    // Inputs
-   clk, we, en, addr, di
+   clk, we, en, addr, din
    );
 
    parameter WORD_WIDTH = 16;
@@ -45,10 +45,10 @@ module sync_ram_wf (/*AUTOARG*/
    input we;
    input en;
    input [9:0] addr;
-   input [WORD_WIDTH-1:0] di;
+   input [WORD_WIDTH-1:0] din;
    output [WORD_WIDTH-1:0] dout;
-   reg [15:0]    RAM [(2<<ADDR_WIDTH)-1:0];
-   reg [15:0]    dout;
+   reg [WORD_WIDTH-1:0]    RAM [(2<<ADDR_WIDTH)-1:0];
+   reg [WORD_WIDTH-1:0]    dout;
 
    always @(posedge clk)
      begin
@@ -56,26 +56,13 @@ module sync_ram_wf (/*AUTOARG*/
           begin
              if (we)
                begin
-                  RAM[addr] <= di;
-                  dout <= di;
+                  RAM[addr] <= din;
+                  dout <= din;
                end
              else
                dout <= RAM[addr];
           end
      end
-endmodule
-
-
-
-
-
-
-   /*AUTOINPUT*/
-   /*AUTOOUTPUT*/
-
-   /*AUTOREG*/
-   /*AUTOWIRE*/
-
 endmodule // sync_ram_wf
 /*
  Local Variables:

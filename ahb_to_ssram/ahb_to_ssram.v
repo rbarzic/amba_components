@@ -32,15 +32,15 @@
 
 module ahb_to_ssram (/*AUTOARG*/
    // Outputs
-   HREADYOUT, HRDATA, HRESP, ahb_sram_addr, ahb_sram_en, ahb_sram_wb,
-   ahb_sram_we, ahb_sram_din,
+   HREADYOUT, HRDATA, HRESP, ahb_sram_addr, ahb_sram_en, ahb_sram_enb,
+   ahb_sram_wb, ahb_sram_we, ahb_sram_din,
    // Inputs
    rst_n, clk, HCLK, HRESETn, HSEL, HADDR, HTRANS, HSIZE, HWRITE,
    HWDATA, HREADY, sram_ahb_dout
    );
 
 
-   parameter MAX_VALUE = 0;
+   parameter AW = 12;
 
 `include "ahb_params.v"
 
@@ -71,7 +71,8 @@ module ahb_to_ssram (/*AUTOARG*/
    // Synchronous SRAM connections
    output [AW-1:0]      ahb_sram_addr;
    output               ahb_sram_en;
-   output               [3:0] ahb_sram_wb;
+   output [3:0]         ahb_sram_enb;
+   output [3:0]         ahb_sram_wb;
    output               ahb_sram_we;
    input [31:0]         sram_ahb_dout;
    output [31:0]        ahb_sram_din;
@@ -93,27 +94,48 @@ module ahb_to_ssram (/*AUTOARG*/
    /*AUTOOUTPUT*/
 
    /*AUTOREG*/
-   // Beginning of automatic regs (for this module's undeclared outputs)
-   reg [AW-1:0]         ahb_sram_addr;
-   reg [31:0]           ahb_sram_din;
-   reg                  ahb_sram_en;
-   reg [3:0]            ahb_sram_wb;
-   reg                  ahb_sram_we;
-   // End of automatics
    /*AUTOWIRE*/
 
 
 
-   assign seq_cycle  = (HTRANS==AMBA_AHB_HTRANS_SEQ);
-   assign nonseq_cycle  = (HTRANS==AMBA_AHB_HTRANS_NONSEQ);
+   //assign seq_cycle  = (HTRANS[1:0] == AMBA_AHB_HTRANS_SEQ[1:0]);
+   //assign nonseq_cycle  = (HTRANS[1:0] ==AMBA_AHB_HTRANS_NONSEQ);
+   //
+   //
+   //assign busy_cycle = (HTRANS==AMBA_AHB_HTRANS_BUSY);
+   //assign idle_cycle = (HTRANS==AMBA_AHB_HTRANS_IDLE);
+
+   reg                  seq_cycle;
+   reg                  nonseq_cycle;
+   reg                  busy_cycle;
+   reg                  idle_cycle;
+
+
+   always @* begin
+      seq_cycle = 0;
+      nonseq_cycle = 0;
+
+      busy_cycle   = 0;
+      idle_cycle   = 0;
+
+      case(HTRANS[1:0])
+        AMBA_AHB_HTRANS_SEQ : begin
+           seq_cycle = 1'b1;
+
+        end
+        AMBA_AHB_HTRANS_NON_SEQ : begin
+           nonseq_cycle = 1'b1;
+        end
+        AMBA_AHB_HTRANS_BUSY : begin
+           busy_cycle = 1'b1;
+        end
+        AMBA_AHB_HTRANS_IDLE : begin
+           idle_cycle = 1'b1;
+        end
+      endcase
+   end
+
    assign active_cycle = seq_cycle || nonseq_cycle;
-
-
-   assign busy_cycle = (HTRANS==AMBA_AHB_HTRANS_BUSY);
-   assign idle_cycle = (HTRANS==AMBA_AHB_HTRANS_IDLE);
-
-
-
    assign read_valid  = active_cycle & HSEL & HREADY & (~HWRITE);
    assign write_valid = active_cycle & HSEL & HREADY & HWRITE;
    assign rw_cycle = read_valid | write_valid;
@@ -182,7 +204,12 @@ module ahb_to_ssram (/*AUTOARG*/
    assign ahb_sram_we   = write_en_r;
 
    // Write cycle followed by a read cycle -> we must wait
-   assign HREADYOUT = write_en_r & read_valid;
+   assign HREADYOUT = !(write_en_r & read_valid);
+
+   assign ahb_sram_wb  = byte_sel_r & {4{write_en_r}};
+   assign ahb_sram_enb = byte_sel_r & {4{ahb_sram_en}};
+
+   assign ahb_sram_din = HWDATA;
 
 
 endmodule // ahb_to_ssram

@@ -1,0 +1,88 @@
+[*]
+[*] GTKWave Analyzer v3.3.64 (w)1999-2014 BSI
+[*] Mon Nov  9 23:14:58 2015
+[*]
+[dumpfile] "/home/ronan/perso/github/amba_components/ahb_to_ssram/tb.vcd"
+[dumpfile_mtime] "Mon Nov  9 23:13:22 2015"
+[dumpfile_size] 6171
+[savefile] "/home/ronan/perso/github/amba_components/ahb_to_ssram/debug.gtkw"
+[timestart] 0
+[size] 2560 1391
+[pos] -1 -1
+*-16.771940 350000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb.
+[sst_width] 201
+[signals_width] 182
+[sst_expanded] 1
+[sst_vpaned_height] 433
+@28
+tb.clk
+tb.HSEL
+@22
+tb.HADDR[11:0]
+@28
+tb.HTRANS[1:0]
+tb.HSIZE[2:0]
+tb.HWRITE
+tb.HREADYOUT
+@23
+tb.ahb_sram_addr[11:0]
+@22
+tb.ahb_sram_enb[3:0]
+tb.ahb_sram_din[31:0]
+tb.sram_ahb_dout[31:0]
+tb.ahb_sram_wb[3:0]
+@200
+-AHB_TO_SRAM
+@28
+tb.U_CHIP.seq_cycle
+tb.U_CHIP.nonseq_cycle
+tb.U_CHIP.read_valid
+tb.U_CHIP.write_valid
+tb.U_CHIP.busy_cycle
+tb.U_CHIP.HTRANS[1:0]
+@22
+tb.U_CHIP.ahb_sram_enb[3:0]
+tb.U_CHIP.ahb_sram_wb[3:0]
+@28
+tb.U_CHIP.ahb_sram_we
+tb.U_CHIP.ahb_sram_en
+@22
+tb.U_CHIP.ahb_sram_addr[11:0]
+tb.U_CHIP.byte_sel_r[3:0]
+@200
+-RAM0
+@28
+tb.U_RAM0.en
+tb.U_RAM0.we
+@22
+tb.U_RAM0.addr[9:0]
+tb.U_RAM0.din[7:0]
+tb.U_RAM0.dout[7:0]
+@200
+-RAM1
+@28
+tb.U_RAM1.en
+tb.U_RAM1.we
+@22
+tb.U_RAM1.addr[9:0]
+tb.U_RAM1.din[7:0]
+tb.U_RAM1.dout[7:0]
+@200
+-RAM2
+@28
+tb.U_RAM2.en
+tb.U_RAM2.we
+@22
+tb.U_RAM2.din[7:0]
+tb.U_RAM2.dout[7:0]
+@200
+-RAM3
+@28
+tb.U_RAM3.en
+tb.U_RAM3.we
+@22
+tb.U_RAM3.din[7:0]
+tb.U_RAM3.dout[7:0]
+[pattern_trace] 1
+[pattern_trace] 0

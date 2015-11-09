@@ -37,8 +37,8 @@ localparam AMBA_AHB_HTRANS_SEQ     = 2'b11;
 
 localparam AMBA_AHB_HSIZE_8BITS      = 3'b000;
 localparam AMBA_AHB_HSIZE_16BITS     = 3'b001;
-localparam AMBA_AHB_HSIZE_32ITS      = 3'b010;
-localparam AMBA_AHB_HSIZE_64ITS      = 3'b011;
+localparam AMBA_AHB_HSIZE_32BITS      = 3'b010;
+localparam AMBA_AHB_HSIZE_64BITS      = 3'b011;
 localparam AMBA_AHB_HSIZE_128BITS    = 3'b100;
 localparam AMBA_AHB_HSIZE_256BITS    = 3'b101;
 localparam AMBA_AHB_HSIZE_512BITS    = 3'b110;

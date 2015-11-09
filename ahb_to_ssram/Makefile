@@ -5,7 +5,7 @@ run:
 	vvp tb
 
 wave:
-	gtkwave tb.vcd
+	gtkwave tb.vcd &
 
 
 help:
@@ -15,7 +15,7 @@ help:
 	@echo "         wave  : View the vcd file using gtkwave vcd viewer"
 
 
-	
+
 
 # For flymake on-the-fly code checking
 check-syntax:

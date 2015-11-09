@@ -30,3 +30,5 @@
 
 # Debug files
 *.dSYM/
+*.vcd
+/ahb_to_ssram/tb
