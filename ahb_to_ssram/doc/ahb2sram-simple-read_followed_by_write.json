@@ -1,0 +1,23 @@
+{signal: [
+  {name: 'HCLK',   wave: 'p........', node: '..abc'},
+  {name: 'HADDR',  wave: 'x.3x4xx..', data: ['@A', '@B']},
+  {name: 'HSEL',   wave: 'x.1.....x', },
+  {name: 'HTRANS', wave: '0.2.....x', data: ['SEQ/NONSEQ', 'SEQ/NONSEQ' ]},
+ 
+  {name: 'HWRITE', wave: 'x.0x1x...'},
+  {name: 'HREADY', wave: 'x.1......'},
+  {name: 'HRDATA', wave: 'x..3x....', data: ['A']},
+  {name: 'HWDATA', wave: 'x....4x..', data: ['B']},
+
+  {},
+  {name: 'ahb_sram_addr',  wave: 'x..3x4.x.', data: ['A', 'B'], phase: 0.5},
+  {name: 'ahb_sram_dout',  wave: 'x...3x...', data: ['A'], phase: 0.5},
+  {name: 'ahb_sram_din',  wave:  'x....x4xx', data: ['B'], phase: 0.5},
+  {name: 'ahb_sram_en',    wave: 'x..1x.1xx', data: ['A', 'B'], phase: 0.5},
+  {name: 'ahb_sram_we',    wave: 'x..0x.1xx', data: ['A', 'B'], phase: 0.5},
+  
+  
+],
+  
+  
+  }

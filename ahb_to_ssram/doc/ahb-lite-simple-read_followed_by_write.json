@@ -1,0 +1,14 @@
+{signal: [
+  {name: 'HCLK',   wave: 'p........', node: '..abc'},
+  {name: 'HADDR',  wave: 'x.3x4xx..', data: ['A', 'B']},
+  {name: 'HSEL',   wave: 'x.1.....x', },
+  {name: 'HTRANS', wave: '0.2.....x', data: ['SEQ/NONSEQ', 'SEQ/NONSEQ' ]},
+ 
+  {name: 'HWRITE', wave: 'x.0x1x...'},
+  {name: 'HREADY', wave: 'x.1......'},
+  {name: 'HRDATA', wave: 'x..3x4x..', data: ['A', 'B']},
+  {name: 'HWDATA', wave: 'x........'},
+],
+  
+  
+  }
