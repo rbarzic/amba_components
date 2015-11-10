@@ -4,3 +4,4 @@ reset_generator.v
 ahb_to_ssram.v
 sync_ram_wf.v
 ahb_driver.v
+chip.v

@@ -35,8 +35,8 @@ module ahb_to_ssram (/*AUTOARG*/
    HREADYOUT, HRDATA, HRESP, ahb_sram_addr, ahb_sram_en, ahb_sram_enb,
    ahb_sram_wb, ahb_sram_we, ahb_sram_din,
    // Inputs
-   rst_n, clk, HCLK, HRESETn, HSEL, HADDR, HTRANS, HSIZE, HWRITE,
-   HWDATA, HREADY, sram_ahb_dout
+   HCLK, HRESETn, HSEL, HADDR, HTRANS, HSIZE, HWRITE, HWDATA, HREADY,
+   sram_ahb_dout
    );
 
 
@@ -48,9 +48,6 @@ module ahb_to_ssram (/*AUTOARG*/
    localparam AHB_DATA_PHASE    = 2;
    localparam AHB_IDLE_PHASE    = 0;
 
-
-   input rst_n;
-   input clk;
 
    // AHB interface
 
@@ -142,7 +139,7 @@ module ahb_to_ssram (/*AUTOARG*/
 
    event byte_sel_update;
 
-   always @(/*AUTOSENSE*/HADDR or HSIZE[2:0]  or rw_cycle) begin
+   always @(/*AUTOSENSE*/HADDR or HSIZE or rw_cycle) begin
       /*AUTO_CONSTANT (  AMBA_AHB_HSIZE_16BITS AMBA_AHB_HSIZE_32BITS  AMBA_AHB_HSIZE_8BITS) */
       -> byte_sel_update;
       byte_sel_a = 4'b1111;
