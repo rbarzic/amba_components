@@ -49,8 +49,6 @@ module sync_ram_wf (/*AUTOARG*/
    output [WORD_WIDTH-1:0] dout;
    reg [WORD_WIDTH-1:0]    RAM [(2<<ADDR_WIDTH)-1:0];
    reg [WORD_WIDTH-1:0]    dout;
-   event                   read;
-   event                   write;
 
    always @(posedge clk)
      begin
@@ -60,11 +58,10 @@ module sync_ram_wf (/*AUTOARG*/
                begin
                   RAM[addr] <= din;
                   dout <= din;
-                  -> write;
                end
              else begin
                dout <= RAM[addr];
-                -> read;
+
              end
           end
      end

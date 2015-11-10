@@ -1,5 +1,5 @@
 comp:
-	iverilog -o tb  -c vlist_tb.txt
+	iverilog -I../../common/include -o tb  -c vlist_tb.txt
 
 run:
 	vvp tb
@@ -19,4 +19,4 @@ help:
 
 # For flymake on-the-fly code checking
 check-syntax:
-	iverilog -t null -o tb  -c vlist_tb.txt
+	iverilog -I../../common/include -t null -o tb  -c vlist_tb.txt

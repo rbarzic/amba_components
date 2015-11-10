@@ -137,11 +137,10 @@ module ahb_to_ssram (/*AUTOARG*/
    assign write_valid = active_cycle & HSEL & HREADY & HWRITE;
    assign rw_cycle = read_valid | write_valid;
 
-   event byte_sel_update;
 
    always @(/*AUTOSENSE*/HADDR or HSIZE or rw_cycle) begin
       /*AUTO_CONSTANT (  AMBA_AHB_HSIZE_16BITS AMBA_AHB_HSIZE_32BITS  AMBA_AHB_HSIZE_8BITS) */
-      -> byte_sel_update;
+
       byte_sel_a = 4'b1111;
       if (rw_cycle) begin
          case(HSIZE[2:0])

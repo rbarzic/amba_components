@@ -33,3 +33,7 @@
 *.vcd
 /ahb_to_ssram/tb
 tb
+*.jou
+*.backup.log
+/ahb_to_ssram/synt/.Xil/chip_propImpl.xdc
+/ahb_to_ssram/synt/vivado.log
