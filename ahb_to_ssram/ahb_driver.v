@@ -99,6 +99,7 @@ module ahb_driver (/*AUTOARG*/
       output [7:0]  data;
 
       begin
+
          HSEL   = 1'b1;
          HADDR = address;
          HWRITE = 1'b0;
@@ -184,16 +185,16 @@ module ahb_driver (/*AUTOARG*/
          // Fixme - HADDR could be changed by the next access
          case(HADDR[1:0])
            0 : begin
-              word_to_be_written = {24'b0,HWDATA [7:0]};
+              word_to_be_written = {24'b0,data};
            end
            1 : begin
-              word_to_be_written = {16'b0,HWDATA [15:8],8'b0};
+              word_to_be_written = {16'b0,data,8'b0};
            end
            2 : begin
-              word_to_be_written = {8'b0,HWDATA [23:16],16'b0};
+              word_to_be_written = {8'b0,data,16'b0};
            end
            3 : begin
-              word_to_be_written = {HWDATA [31:24],24'b0};
+              word_to_be_written = {data,24'b0};
            end
            default: begin
            end
@@ -213,6 +214,41 @@ module ahb_driver (/*AUTOARG*/
    endtask // read_non_seq
 
 
+
+   task t_read_then_write_32bits;
+      input [AW-1:0] address1;
+      output [31:0]  data1;
+      input [AW-1:0] address2;
+      input [31:0]  data2;
+
+      begin
+         HSEL   = 1'b1;
+         HADDR = address1;
+         HWRITE = 1'b0;
+         HTRANS = AMBA_AHB_HTRANS_NON_SEQ;
+         HSIZE  = AMBA_AHB_HSIZE_32BITS;
+         HREADY = 1'b1;
+
+         @(posedge HCLK);
+         #5;
+         HADDR = address2;
+         HTRANS = AMBA_AHB_HTRANS_NON_SEQ;
+         HSIZE  = AMBA_AHB_HSIZE_32BITS;
+         HREADY = 1'b1;
+         HWRITE = 1'b1;
+         while(!HREADYOUT)
+           @(posedge HCLK);
+         data1 = HRDATA;
+         HWDATA = data2;
+         HWRITE = 1'b0;
+         while(!HREADYOUT)
+           @(posedge HCLK);
+         #5;
+         HSEL = 1'b0;
+
+
+      end
+   endtask // read_non_seq
 
 
 

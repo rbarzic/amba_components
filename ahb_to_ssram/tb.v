@@ -73,7 +73,7 @@ module tb;
       .addr            (ahb_sram_addr[9:0]),
 
      ); */
-   sync_ram_wf #(.WORD_WIDTH(8),.ADDR_WIDTH(AW))
+   sync_ram_wf #(.WORD_WIDTH(8),.ADDR_WIDTH(AW-2))
    U_RAM0 (
                            /*AUTOINST*/
            // Outputs
@@ -82,11 +82,11 @@ module tb;
            .clk                         (clk),
            .we                          (ahb_sram_wb[0]),        // Templated
            .en                          (ahb_sram_enb[0]),       // Templated
-           .addr                        (ahb_sram_addr[9:0]),    // Templated
+           .addr                        (ahb_sram_addr[9:2]),    // Templated
            .din                         (ahb_sram_din[7:0]));     // Templated
 
 
-   sync_ram_wf #(.WORD_WIDTH(8),.ADDR_WIDTH(AW))
+   sync_ram_wf #(.WORD_WIDTH(8),.ADDR_WIDTH(AW-2))
    U_RAM1 (/*AUTOINST*/
            // Outputs
            .dout                        (sram_ahb_dout[15:8]),   // Templated
@@ -94,10 +94,10 @@ module tb;
            .clk                         (clk),
            .we                          (ahb_sram_wb[1]),        // Templated
            .en                          (ahb_sram_enb[1]),       // Templated
-           .addr                        (ahb_sram_addr[9:0]),    // Templated
+           .addr                        (ahb_sram_addr[9:2]),    // Templated
            .din                         (ahb_sram_din[15:8]));    // Templated
 
-   sync_ram_wf #(.WORD_WIDTH(8),.ADDR_WIDTH(AW))
+   sync_ram_wf #(.WORD_WIDTH(8),.ADDR_WIDTH(AW-2))
    U_RAM2 (/*AUTOINST*/
            // Outputs
            .dout                        (sram_ahb_dout[23:16]),  // Templated
@@ -105,10 +105,10 @@ module tb;
            .clk                         (clk),
            .we                          (ahb_sram_wb[2]),        // Templated
            .en                          (ahb_sram_enb[2]),       // Templated
-           .addr                        (ahb_sram_addr[9:0]),    // Templated
+           .addr                        (ahb_sram_addr[9:2]),    // Templated
            .din                         (ahb_sram_din[23:16]));   // Templated
 
-   sync_ram_wf #(.WORD_WIDTH(8),.ADDR_WIDTH(AW))
+   sync_ram_wf #(.WORD_WIDTH(8),.ADDR_WIDTH(AW-2))
    U_RAM3 (/*AUTOINST*/
            // Outputs
            .dout                        (sram_ahb_dout[31:24]),  // Templated
@@ -116,7 +116,7 @@ module tb;
            .clk                         (clk),
            .we                          (ahb_sram_wb[3]),        // Templated
            .en                          (ahb_sram_enb[3]),       // Templated
-           .addr                        (ahb_sram_addr[9:0]),    // Templated
+           .addr                        (ahb_sram_addr[9:2]),    // Templated
            .din                         (ahb_sram_din[31:24]));   // Templated
 
 
@@ -174,6 +174,7 @@ module tb;
 
   // Start by pulsing the reset low for some nanoseconds
   reg [31:0] tmp;
+  reg [7:0] tmp8;
 
   initial begin
     rst_async = 1'b0;
@@ -188,20 +189,65 @@ module tb;
 
      U_AHB_DRIVER.t_write32bits_non_seq(12'h010,32'hCAFEBABE);
      @(posedge clk);
+     #3;
      U_AHB_DRIVER.t_write32bits_non_seq(12'h014,32'h12345678);
      @(posedge clk);
      @(posedge clk);
+     #3;
      U_AHB_DRIVER.t_read32bits_non_seq(12'h010,tmp);
      check_32bits(tmp,32'hCAFEBABE);
 
      @(posedge clk);
+     #3;
      U_AHB_DRIVER.t_read32bits_non_seq(12'h014,tmp);
      check_32bits(tmp,32'h12345678);
      @(posedge clk);
+     #3;
      U_AHB_DRIVER.t_write8bits_non_seq(12'h010,8'h55);
      @(posedge clk);
+     #3;
      U_AHB_DRIVER.t_read32bits_non_seq(12'h010,tmp);
      check_32bits(tmp,32'hCAFEBA55);
+     @(posedge clk);
+
+     #3;
+     U_AHB_DRIVER.t_write8bits_non_seq(12'h011,8'hAA);
+     @(posedge clk);
+     #3;
+     U_AHB_DRIVER.t_write8bits_non_seq(12'h012,8'hBB);
+     @(posedge clk);
+     #3;
+     U_AHB_DRIVER.t_write8bits_non_seq(12'h013,8'hCC);
+     @(posedge clk);
+     #3;
+     U_AHB_DRIVER.t_read32bits_non_seq(12'h010,tmp);
+     check_32bits(tmp,32'hCCBBAA55);
+     @(posedge clk);
+     #3;
+     U_AHB_DRIVER.t_read8bits_non_seq(12'h010,tmp8);
+     check_8bits(tmp8,8'h55);
+     @(posedge clk);
+     #3;
+     U_AHB_DRIVER.t_read8bits_non_seq(12'h011,tmp8);
+     check_8bits(tmp8,8'hAA);
+     @(posedge clk);
+     #3;
+     U_AHB_DRIVER.t_read8bits_non_seq(12'h012,tmp8);
+     check_8bits(tmp8,8'hBB);
+     @(posedge clk);
+     #3;
+     U_AHB_DRIVER.t_read8bits_non_seq(12'h013,tmp8);
+     check_8bits(tmp8,8'hCC);
+
+     // Read immediatly followed by a write (Pipelining)
+     @(posedge clk);
+     #3;
+     U_AHB_DRIVER.t_read_then_write_32bits(12'h010,tmp,12'h014,32'hDEADBEEF);
+     check_32bits(tmp,32'hCCBBAA55);
+     U_AHB_DRIVER.t_read32bits_non_seq(12'h014,tmp);
+     check_32bits(tmp,32'h12345678);
+     @(posedge clk);
+
 
      #1000;
 
