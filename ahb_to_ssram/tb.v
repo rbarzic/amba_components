@@ -192,6 +192,17 @@ module tb;
      @(posedge clk);
      @(posedge clk);
      U_AHB_DRIVER.t_read32bits_non_seq(12'h010,tmp);
+     check_32bits(tmp,32'hCAFEBABE);
+
+     @(posedge clk);
+     U_AHB_DRIVER.t_read32bits_non_seq(12'h014,tmp);
+     check_32bits(tmp,32'h12345678);
+     @(posedge clk);
+     U_AHB_DRIVER.t_write8bits_non_seq(12'h010,8'h55);
+     @(posedge clk);
+     U_AHB_DRIVER.t_read32bits_non_seq(12'h010,tmp);
+     check_32bits(tmp,32'hCAFEBA55);
+
      #1000;
 
     $display("-I- Done !");
@@ -200,7 +211,7 @@ module tb;
 
    // watchdog
    initial begin
-      #10000;
+      #100000;
       $display("-E- Error (watchdog) !");
       $finish;
    end

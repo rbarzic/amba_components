@@ -210,6 +210,7 @@ module ahb_to_ssram (/*AUTOARG*/
    assign ahb_sram_enb = byte_sel_r & {4{ahb_sram_en}};
 
    assign ahb_sram_din = HWDATA;
+   assign HRDATA  = sram_ahb_dout;
 
 
 endmodule // ahb_to_ssram

@@ -65,7 +65,7 @@ module ahb_driver (/*AUTOARG*/
    reg           HTRANS;
    reg           HREADY;
    reg           HSEL;
-   reg           HWDATA;
+   reg [31:0]    HWDATA;
 
 
 
@@ -94,9 +94,51 @@ module ahb_driver (/*AUTOARG*/
       end
    endtask // read_non_seq
 
+   task t_read8bits_non_seq;
+      input [AW-1:0] address;
+      output [7:0]  data;
+
+      begin
+         HSEL   = 1'b1;
+         HADDR = address;
+         HWRITE = 1'b0;
+         HTRANS = AMBA_AHB_HTRANS_NON_SEQ;
+         HSIZE  = AMBA_AHB_HSIZE_8BITS;
+         HREADY = 1'b1;
+
+         @(posedge HCLK);
+         #5;
+         HWRITE = 1'b0;
+         while(!HREADYOUT)
+           @(posedge HCLK);
+         case(HADDR[1:0])
+           0 : begin
+              data = HRDATA[7:0];
+           end
+           1 : begin
+              data = HRDATA[15:8];
+           end
+           2 : begin
+              data = HRDATA[23:16];
+           end
+           3 : begin
+              data = HRDATA[31:24];
+           end
+           default: begin
+           end
+
+         endcase
+
+         HSEL = 1'b0;
+
+
+      end
+   endtask // read_non_seq
+
    task t_write32bits_non_seq;
       input [AW-1:0] address;
       input [31:0]   data;
+
 
       begin
          HSEL   = 1'b1;
@@ -106,9 +148,12 @@ module ahb_driver (/*AUTOARG*/
          HSIZE  = AMBA_AHB_HSIZE_32BITS;
          HREADY = 1'b1;
 
+
          @(posedge HCLK);
          #5;
+
          HWDATA = data;
+
 
          HWRITE = 1'b0;
          while(!HREADYOUT)
@@ -118,6 +163,55 @@ module ahb_driver (/*AUTOARG*/
 
       end
    endtask // read_non_seq
+
+   task t_write8bits_non_seq;
+      input [AW-1:0] address;
+      input [7:0]   data;
+      reg [31:0]    word_to_be_written;
+      begin
+         HSEL   = 1'b1;
+         HADDR = address;
+         HWRITE = 1'b1;
+         HTRANS = AMBA_AHB_HTRANS_NON_SEQ;
+         HSIZE  = AMBA_AHB_HSIZE_8BITS;
+         HREADY = 1'b1;
+
+
+
+
+         @(posedge HCLK);
+         #5;
+         // Fixme - HADDR could be changed by the next access
+         case(HADDR[1:0])
+           0 : begin
+              word_to_be_written = {24'b0,HWDATA [7:0]};
+           end
+           1 : begin
+              word_to_be_written = {16'b0,HWDATA [15:8],8'b0};
+           end
+           2 : begin
+              word_to_be_written = {8'b0,HWDATA [23:16],16'b0};
+           end
+           3 : begin
+              word_to_be_written = {HWDATA [31:24],24'b0};
+           end
+           default: begin
+           end
+
+         endcase
+
+
+         HWDATA = word_to_be_written;
+
+         HWRITE = 1'b0;
+         while(!HREADYOUT)
+           @(posedge HCLK);
+         #5;
+         HSEL = 1'b0;
+
+      end
+   endtask // read_non_seq
+
 
 
 
