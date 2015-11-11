@@ -1,6 +1,9 @@
 comp:
 	iverilog -I../../common/include -o tb  -c vlist_tb.txt
 
+comp32:
+	iverilog -DUSE_32BIT_RAM -I../../common/include -o tb  -c vlist_tb.txt
+
 run:
 	vvp tb
 

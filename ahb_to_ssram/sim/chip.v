@@ -67,7 +67,7 @@ module chip (/*AUTOARG*/
    wire [31:0]          ahb_sram_din;           // From U_AHB_TO_SSRAM of ahb_to_ssram.v
    wire [3:0]           ahb_sram_enb;           // From U_AHB_TO_SSRAM of ahb_to_ssram.v
    wire [3:0]           ahb_sram_wb;            // From U_AHB_TO_SSRAM of ahb_to_ssram.v
-   wire [31:0]          sram_ahb_dout;          // From U_RAM0 of sync_ram_wf.v, ...
+   wire [31:0]          sram_ahb_dout;          // From U_RAM of sync_ram_wf_x32.v, ...
    // End of automatics
 
 
@@ -103,6 +103,33 @@ module chip (/*AUTOARG*/
    .HREADY                              (HREADY),
    .sram_ahb_dout                       (sram_ahb_dout[31:0]));
 
+
+
+`ifdef USE_32BIT_RAM
+
+   /* sync_ram_wf_x32 AUTO_TEMPLATE(
+    .dout            (sram_ahb_dout[31:0]),
+    .din            (ahb_sram_din[31:0]),
+    .web              (ahb_sram_wb[@]),
+    .enb              (ahb_sram_enb[@]),
+    .addr            (ahb_sram_addr[9:0]),
+    .clk(HCLK),
+
+    ); */
+   sync_ram_wf_x32 #(.ADDR_WIDTH(AW-2))
+   U_RAM(   /*AUTOINST*/
+         // Outputs
+         .dout                          (sram_ahb_dout[31:0]),   // Templated
+         // Inputs
+         .clk                           (HCLK),                  // Templated
+         .web                           (ahb_sram_wb[3:0]),      // Templated
+         .enb                           (ahb_sram_enb[3:0]),     // Templated
+         .addr                          (ahb_sram_addr[11:2]),    // Templated
+         .din                           (ahb_sram_din[31:0]));    // Templated
+
+
+`else
+
      /* sync_ram_wf AUTO_TEMPLATE(
       .dout            (sram_ahb_dout[@"(+ 7 (* 8 @))":@"(* 8 @)"]),
       .din            (ahb_sram_din[@"(+ 7 (* 8 @))":@"(* 8 @)"]),
@@ -121,7 +148,7 @@ module chip (/*AUTOARG*/
            .clk                         (HCLK),                  // Templated
            .we                          (ahb_sram_wb[0]),        // Templated
            .en                          (ahb_sram_enb[0]),       // Templated
-           .addr                        (ahb_sram_addr[9:2]),    // Templated
+           .addr                        (ahb_sram_addr[11:2]),    // Templated
            .din                         (ahb_sram_din[7:0]));     // Templated
 
 
@@ -133,7 +160,7 @@ module chip (/*AUTOARG*/
            .clk                         (HCLK),                  // Templated
            .we                          (ahb_sram_wb[1]),        // Templated
            .en                          (ahb_sram_enb[1]),       // Templated
-           .addr                        (ahb_sram_addr[9:2]),    // Templated
+           .addr                        (ahb_sram_addr[11:2]),    // Templated
            .din                         (ahb_sram_din[15:8]));    // Templated
 
    sync_ram_wf #(.WORD_WIDTH(8),.ADDR_WIDTH(AW-2))
@@ -144,7 +171,7 @@ module chip (/*AUTOARG*/
            .clk                         (HCLK),                  // Templated
            .we                          (ahb_sram_wb[2]),        // Templated
            .en                          (ahb_sram_enb[2]),       // Templated
-           .addr                        (ahb_sram_addr[9:2]),    // Templated
+           .addr                        (ahb_sram_addr[11:2]),    // Templated
            .din                         (ahb_sram_din[23:16]));   // Templated
 
    sync_ram_wf #(.WORD_WIDTH(8),.ADDR_WIDTH(AW-2))
@@ -155,12 +182,12 @@ module chip (/*AUTOARG*/
            .clk                         (HCLK),                  // Templated
            .we                          (ahb_sram_wb[3]),        // Templated
            .en                          (ahb_sram_enb[3]),       // Templated
-           .addr                        (ahb_sram_addr[9:2]),    // Templated
+           .addr                        (ahb_sram_addr[11:2]),    // Templated
            .din                         (ahb_sram_din[31:24]));   // Templated
 
 
 
-
+`endif
 
 
 

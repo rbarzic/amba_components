@@ -3,6 +3,7 @@ source vivado_utils.tcl
 
 read_verilog "../rtl/verilog/ahb_to_ssram.v"
 read_verilog "../sim/sync_ram_wf.v"
+read_verilog "../sim/sync_ram_wf_x32.v"
 read_verilog "../sim/chip.v"
 
 
@@ -10,7 +11,7 @@ set include_dir ""
 set include_dir [concat $include_dir "../../common/include"]
 read_xdc ./xilinx_constraints.xdc
 
-synth_design -include_dirs $include_dir -verilog_define SYNTHESYS -top chip
+synth_design -include_dirs $include_dir -verilog_define SYNTHESYS -verilog_define USE_32BIT_RAM -top chip
 
 set outputDir ./rpt
 file mkdir $outputDir
