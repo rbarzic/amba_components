@@ -1,7 +1,7 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2015.3 (lin64) Build 1368829 Mon Sep 28 20:06:39 MDT 2015
-| Date         : Tue Nov 10 23:15:18 2015
+| Date         : Tue Nov 10 23:37:29 2015
 | Host         : corei7n2015 running 64-bit Ubuntu 15.04
 | Command      : report_timing_summary -file ./rpt/post_synth_timing_summary.rpt
 | Design       : chip
@@ -126,7 +126,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-      7.770        0.000                      0                   67        0.255        0.000                      0                   67        4.650        0.000                       0                    20  
+      7.770        0.000                      0                   57        0.254        0.000                      0                   57        4.650        0.000                       0                    18  
 
 
 All user specified timing constraints are met.
@@ -149,7 +149,7 @@ HCLK   {0.000 5.000}      10.000          100.000
 
 Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-HCLK                7.770        0.000                      0                   67        0.255        0.000                      0                   67        4.650        0.000                       0                    20  
+HCLK                7.770        0.000                      0                   57        0.254        0.000                      0                   57        4.650        0.000                       0                    18  
 
 
 ------------------------------------------------------------------------------------------------
@@ -181,7 +181,7 @@ From Clock:  HCLK
   To Clock:  HCLK
 
 Setup :            0  Failing Endpoints,  Worst Slack        7.770ns,  Total Violation        0.000ns
-Hold  :            0  Failing Endpoints,  Worst Slack        0.255ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.254ns,  Total Violation        0.000ns
 PW    :            0  Failing Endpoints,  Worst Slack        4.650ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
 
@@ -216,7 +216,7 @@ Slack (MET) :             7.770ns  (required time - arrival time)
     E3                   IBUF (Prop_ibuf_I_O)         0.000     0.000 r  HCLK_IBUF_inst/O
                          net (fo=1, unplaced)         0.584     0.584    HCLK_IBUF
                          BUFG (Prop_bufg_I_O)         0.120     0.704 r  HCLK_IBUF_BUFG_inst/O
-                         net (fo=19, unplaced)        0.584     1.288    U_AHB_TO_SSRAM/HCLK_IBUF_BUFG
+                         net (fo=17, unplaced)        0.584     1.288    U_AHB_TO_SSRAM/HCLK_IBUF_BUFG
                          FDCE                                         r  U_AHB_TO_SSRAM/byte_sel_r_reg[0]/C
   -------------------------------------------------------------------    -------------------
                          FDCE (Prop_fdce_C_Q)         0.269     1.557 r  U_AHB_TO_SSRAM/byte_sel_r_reg[0]/Q
@@ -232,7 +232,7 @@ Slack (MET) :             7.770ns  (required time - arrival time)
     E3                   IBUF (Prop_ibuf_I_O)         0.000    10.000 r  HCLK_IBUF_inst/O
                          net (fo=1, unplaced)         0.554    10.554    HCLK_IBUF
                          BUFG (Prop_bufg_I_O)         0.113    10.667 r  HCLK_IBUF_BUFG_inst/O
-                         net (fo=19, unplaced)        0.439    11.106    U_RAM0/HCLK_IBUF_BUFG
+                         net (fo=17, unplaced)        0.439    11.106    U_RAM0/HCLK_IBUF_BUFG
                          RAMB18E1                                     r  U_RAM0/RAM_reg/CLKARDCLK
                          clock pessimism              0.036    11.143    
                          clock uncertainty           -0.035    11.107    
@@ -250,7 +250,7 @@ Slack (MET) :             7.770ns  (required time - arrival time)
 
 Min Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.255ns  (arrival time - required time)
+Slack (MET) :             0.254ns  (arrival time - required time)
   Source:                 U_AHB_TO_SSRAM/write_en_r_reg/C
                             (rising edge-triggered cell FDCE clocked by HCLK  {rise@0.000ns fall@5.000ns period=10.000ns})
   Destination:            U_RAM0/RAM_reg/ADDRARDADDR[10]
@@ -258,7 +258,7 @@ Slack (MET) :             0.255ns  (arrival time - required time)
   Path Group:             HCLK
   Path Type:              Hold (Min at Fast Process Corner)
   Requirement:            0.000ns  (HCLK rise@0.000ns - HCLK rise@0.000ns)
-  Data Path Delay:        0.583ns  (logic 0.164ns (28.140%)  route 0.419ns (71.860%))
+  Data Path Delay:        0.582ns  (logic 0.164ns (28.201%)  route 0.418ns (71.799%))
   Logic Levels:           1  (LUT3=1)
   Clock Path Skew:        0.145ns (DCD - SCD - CPR)
     Destination Clock Delay (DCD):    0.548ns
@@ -273,13 +273,13 @@ Slack (MET) :             0.255ns  (arrival time - required time)
     E3                   IBUF (Prop_ibuf_I_O)         0.000     0.000 r  HCLK_IBUF_inst/O
                          net (fo=1, unplaced)         0.246     0.246    HCLK_IBUF
                          BUFG (Prop_bufg_I_O)         0.026     0.272 r  HCLK_IBUF_BUFG_inst/O
-                         net (fo=19, unplaced)        0.114     0.386    U_AHB_TO_SSRAM/HCLK_IBUF_BUFG
+                         net (fo=17, unplaced)        0.114     0.386    U_AHB_TO_SSRAM/HCLK_IBUF_BUFG
                          FDCE                                         r  U_AHB_TO_SSRAM/write_en_r_reg/C
   -------------------------------------------------------------------    -------------------
                          FDCE (Prop_fdce_C_Q)         0.100     0.486 r  U_AHB_TO_SSRAM/write_en_r_reg/Q
-                         net (fo=20, unplaced)        0.173     0.659    U_AHB_TO_SSRAM/write_en_r_reg_n_0
-                         LUT3 (Prop_lut3_I1_O)        0.064     0.723 r  U_AHB_TO_SSRAM/RAM_reg_i_5/O
-                         net (fo=4, unplaced)         0.246     0.969    U_RAM0/ADDRARDADDR[6]
+                         net (fo=18, unplaced)        0.172     0.658    U_AHB_TO_SSRAM/write_en_r_reg_n_0
+                         LUT3 (Prop_lut3_I1_O)        0.064     0.722 r  U_AHB_TO_SSRAM/RAM_reg_i_3/O
+                         net (fo=4, unplaced)         0.246     0.968    U_RAM0/ADDRARDADDR[6]
                          RAMB18E1                                     r  U_RAM0/RAM_reg/ADDRARDADDR[10]
   -------------------------------------------------------------------    -------------------
 
@@ -289,16 +289,16 @@ Slack (MET) :             0.255ns  (arrival time - required time)
     E3                   IBUF (Prop_ibuf_I_O)         0.000     0.000 r  HCLK_IBUF_inst/O
                          net (fo=1, unplaced)         0.259     0.259    HCLK_IBUF
                          BUFG (Prop_bufg_I_O)         0.030     0.289 r  HCLK_IBUF_BUFG_inst/O
-                         net (fo=19, unplaced)        0.259     0.548    U_RAM0/HCLK_IBUF_BUFG
+                         net (fo=17, unplaced)        0.259     0.548    U_RAM0/HCLK_IBUF_BUFG
                          RAMB18E1                                     r  U_RAM0/RAM_reg/CLKARDCLK
                          clock pessimism             -0.017     0.531    
                          RAMB18E1 (Hold_ramb18e1_CLKARDCLK_ADDRARDADDR[10])
                                                       0.183     0.714    U_RAM0/RAM_reg
   -------------------------------------------------------------------
                          required time                         -0.714    
-                         arrival time                           0.969    
+                         arrival time                           0.968    
   -------------------------------------------------------------------
-                         slack                                  0.255    
+                         slack                                  0.254    
 
 
 
@@ -313,8 +313,8 @@ Sources:            { HCLK }
 
 Check Type        Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location  Pin
 Min Period        n/a     RAMB18E1/CLKARDCLK  n/a            2.183         10.000      7.817                U_RAM1/RAM_reg/CLKARDCLK
-Low Pulse Width   Slow    FDCE/C              n/a            0.350         5.000       4.650                U_AHB_TO_SSRAM/byte_sel_r_reg[2]/C
-High Pulse Width  Slow    FDCE/C              n/a            0.350         5.000       4.650                U_AHB_TO_SSRAM/byte_sel_r_reg[2]/C
+Low Pulse Width   Slow    FDCE/C              n/a            0.350         5.000       4.650                U_AHB_TO_SSRAM/byte_sel_r_reg[3]/C
+High Pulse Width  Slow    FDCE/C              n/a            0.350         5.000       4.650                U_AHB_TO_SSRAM/byte_sel_r_reg[3]/C
 
 
 
