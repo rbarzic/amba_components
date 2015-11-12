@@ -1,6 +1,6 @@
 {signal: [
   {name: 'HCLK',   wave: 'p........', node: '..abc'},
-  {name: 'HADDR',  wave: 'x.3x4xx..', data: ['@A', '@B']},
+  {name: 'HADDR',  wave: 'x.3x4xx..', data: ['@A', '@BB']},
   {name: 'HSEL',   wave: 'x.1.....x', },
   {name: 'HTRANS', wave: '0.2.....x', data: ['SEQ/NONSEQ', 'SEQ/NONSEQ' ]},
  

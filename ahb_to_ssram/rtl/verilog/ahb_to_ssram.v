@@ -60,7 +60,7 @@ module ahb_to_ssram (/*AUTOARG*/
    input  wire          HWRITE;  // Write control
    input  wire [31:0]   HWDATA;  // Write data
    input  wire          HREADY;  // Transfer phase done
-   output wire          HREADYOUT; // Device ready
+   output reg           HREADYOUT; // Device ready
    output wire [31:0]   HRDATA;    // Read data output
    output wire          HRESP;     // Device response (always OKAY)
 
@@ -82,6 +82,8 @@ module ahb_to_ssram (/*AUTOARG*/
    reg data_phase_r;
    reg write_en_r;
    reg [AW-1:0] haddr_r;
+
+
 
 
 
@@ -197,12 +199,27 @@ module ahb_to_ssram (/*AUTOARG*/
       end
    end
 
+   always @(posedge HCLK or negedge HRESETn) begin
+      if(HRESETn == 1'b0) begin
+         HREADYOUT <= 1'b1;
+
+         /*AUTORESET*/
+      end
+      else begin
+         HREADYOUT <= !(write_en_r & read_valid);
+      end
+   end
+
+
+
+
+
+
    assign ahb_sram_addr = write_en_r ? haddr_r : HADDR;
    assign ahb_sram_en   = read_valid | write_en_r;
    assign ahb_sram_we   = write_en_r;
 
    // Write cycle followed by a read cycle -> we must wait
-   assign HREADYOUT = !(write_en_r & read_valid);
 
    assign ahb_sram_wb  = byte_sel_r & {4{write_en_r}};
    assign ahb_sram_enb = byte_sel_r & {4{ahb_sram_en}};
