@@ -1,0 +1,19 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "Welcome to AMBA_COMPONENTS\n\n\nAMBA_COMPONENTS is a collection of verilog IPs related to the ARM\u00ae AMBA bus familly.\n\n\nAvailable modules\n\n\n\n\nahb_to_ssram\n - An AHB to synchronous SRAM bridge.", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#welcome-to-amba_components", 
+            "text": "AMBA_COMPONENTS is a collection of verilog IPs related to the ARM\u00ae AMBA bus familly.", 
+            "title": "Welcome to AMBA_COMPONENTS"
+        }, 
+        {
+            "location": "/#available-modules", 
+            "text": "ahb_to_ssram  - An AHB to synchronous SRAM bridge.", 
+            "title": "Available modules"
+        }
+    ]
+}
